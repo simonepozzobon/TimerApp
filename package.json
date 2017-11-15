@@ -1,0 +1,35 @@
+{
+	"description": "Timing App",
+	"license": "SEE LICENSE IN <your-license-filename>",
+	"readme": "NativeScript Application",
+	"repository": "<fill-your-repository-here>",
+	"nativescript": {
+		"id": "org.nativescript.TimerApp",
+		"tns-ios": {
+			"version": "3.3.0"
+		}
+	},
+	"dependencies": {
+		"axios": "^0.17.1",
+		"bootstrap": "^4.0.0-beta.2",
+		"fontawesome": "^4.7.2",
+		"gsap": "^1.20.3",
+		"jquery": "^3.2.1",
+		"lodash": "^4.17.4",
+		"nativescript-theme-core": "~1.0.4",
+		"nativescript-vue": "^0.1.1",
+		"popper.js": "^1.12.8",
+		"tns-core-modules": "^3.0.0",
+		"vue-router": "^2.4.0",
+		"vuedraggable": "^2.15.0"
+	},
+	"devDependencies": {
+		"babel-traverse": "6.24.1",
+		"babel-types": "6.24.1",
+		"babylon": "6.16.1",
+		"laravel-mix": "^1.6.1",
+		"lazy": "1.0.11",
+		"nativescript-dev-android-snapshot": "^0.*.*",
+		"webpack": "^3.8.1"
+	}
+}
