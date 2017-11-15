@@ -1,59 +1,74 @@
 const Vue = require('nativescript-vue/dist/index')
+const VueRouter = require('vue-router')
+Vue.use(VueRouter)
+global.process = {env: {}} // hack! a build process should replace process.env's with static strings.
 
-Vue.component('image-viewer', {
-    props: ['imgSrc'],
-
-    data() {
-        return {
-            img: ''
-        }
-    },
-
+const Foo = {
     template: `
-        <stack-layout>
-            <image style="height: 200;" :src="img"></image>
-            <scroll-view orientation="horizontal" style="height: 100">
-                <stack-layout orientation="horizontal">
-                    <image v-for="i in 10" key="i" 
-                    :src="i%2 ? '~/images/apple.jpg' : '~/images/vue.png'" 
-                    @tap="img = i%2 ? '~/images/apple.jpg' : '~/images/vue.png'"></image>
-                </stack-layout>
-            </scroll-view>
-        </stack-layout>
-    `,
+    <stack-layout>
+        <label style="text-align: center; color: #41b883; font-size: 30">Dio Porco!</label>
+        <image src="~/images/vue.png" style="height: 200"></image>
+    </stack-layout>
+`
+}
+const Bar = {
+    template: `
+    <stack-layout>
+        <button @tap="$router.replace('/home/fizz')">I'm home</button>
+        <button @tap="$router.replace('/home/buzz')">and I like buttons</button>
+        <button>as you may tell</button>
+        <button>:)</button>
 
-    mounted() {
-        this.img = this.imgSrc
-    }
+        <router-view></router-view>
+    </stack-layout>
+`
+}
+const Fizz = {
+    template: `
+    <stack-layout>
+        <label>Hi I'm fizz...</label>
+    </stack-layout>
+`
+}
+const Buzz = {
+    template: `
+    <stack-layout>
+        <label>Hi I'm buzz...</label>
+    </stack-layout>
+`
+}
+
+const router = new VueRouter({
+    routes: [
+        {path: '/foo', component: Foo},
+        {
+            path: '/home', component: Bar,
+            children: [
+                {path: 'fizz', component: Fizz},
+                {path: 'buzz', component: Buzz}
+            ]
+        },
+        // {path: '*', redirect: '/foo'}
+    ]
 })
 
+router.replace('/home')
+
 new Vue({
+    router,
+
     template: `
         <page>
-            <scroll-view>
-                <stack-layout>
-                    <button @tap="onTap">TAP HERE</button>
-                    <button @tap="textRed = !textRed" style="color: white; background-color: darkcyan;">TAP HERE</button>
-                    <label :style="{color: textRed ? 'red' : 'blue'}"
-                            style="text-align: center; margin-top: 20; font-size: 40"
-                            :text="showTrick ? 'Poof!' : 'Wait for it!'"></label>
-                    <button @tap="showTrick = !showTrick">Tap to see a trick!</button>
-                    
-                    <image-viewer v-if="showTrick" :imgSrc="imgSrc"></image-viewer>
+            <stack-layout>
+                <stack-layout orientation="horizontal">
+                    <button @tap="$router.replace('/foo')">Foo</button>
+                    <button @tap="$router.replace('/home')">Bar</button>
                 </stack-layout>
-            </scroll-view>
+
+                <label style="text-align: center">Current route: {{ $route.fullPath }}</label>
+
+                <router-view></router-view>
+            </stack-layout>
         </page>
     `,
-
-    data: {
-        textRed: false,
-        showTrick: false,
-        imgSrc: '~/images/apple.jpg'
-    },
-
-    methods: {
-        onTap() {
-            alert('Nice Tap!')
-        }
-    }
 }).$start()
